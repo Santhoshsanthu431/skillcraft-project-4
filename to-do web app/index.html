@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    #app {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #task-input {
+      width: calc(100% - 80px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #add-task-btn {
+      padding: 10px 15px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #add-task-btn:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #f9f9f9;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #e0a800;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #b02a37;
+    }
+
+    .mark-complete-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .mark-complete-btn:hover {
+      background-color: #218838;
+    }
+
+    .date-time {
+      font-size: 12px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>To-Do App</h1>
+  <div id="app">
+    <input type="text" id="task-input" placeholder="Enter a new task...">
+    <button id="add-task-btn">Add Task</button>
+
+    <ul id="task-list"></ul>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById("task-input");
+    const addTaskBtn = document.getElementById("add-task-btn");
+    const taskList = document.getElementById("task-list");
+
+    function addTask() {
+      const taskText = taskInput.value.trim();
+
+      if (!taskText) {
+        alert("Please enter a task.");
+        return;
+      }
+
+      const taskElement = document.createElement("li");
+
+      const taskContent = document.createElement("span");
+      taskContent.textContent = taskText;
+
+      const dateTime = document.createElement("span");
+      dateTime.classList.add("date-time");
+      dateTime.textContent = ` | ${new Date().toLocaleString()}`;
+
+      const markCompleteBtn = document.createElement("button");
+      markCompleteBtn.textContent = "Mark Completed";
+      markCompleteBtn.classList.add("mark-complete-btn");
+      markCompleteBtn.onclick = () => {
+        taskContent.classList.toggle("completed");
+      };
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.classList.add("edit-btn");
+      editBtn.onclick = () => {
+        const newTaskText = prompt("Edit your task", taskContent.textContent);
+        if (newTaskText !== null && newTaskText.trim() !== "") {
+          taskContent.textContent = newTaskText;
+          taskElement.appendChild(dateTime);
+        }
+      };
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.classList.add("delete-btn");
+      deleteBtn.onclick = () => {
+        taskElement.remove();
+      };
+
+      taskElement.appendChild(taskContent);
+      taskElement.appendChild(dateTime);
+      taskElement.appendChild(markCompleteBtn);
+      taskElement.appendChild(editBtn);
+      taskElement.appendChild(deleteBtn);
+      taskList.appendChild(taskElement);
+
+      taskInput.value = "";
+    }
+
+    addTaskBtn.addEventListener("click", addTask);
+    taskInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        addTask();
+      }
+    });
+  </script>
+</body>
+</html>
